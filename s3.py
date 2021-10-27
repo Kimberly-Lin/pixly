@@ -12,17 +12,23 @@ S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(AWS_BUCKET)
 # data = open('./test1.jpg', 'rb')
 # resp = pixly_bucket.put_object(Key='test1.jpg', Body=data)
 
+
 def upload(image, id):
-    s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     # pixly_bucket = s3.Bucket(os.environ['AWS_BUCKET'])
     try:
-        s3.upload_fileobj(
+        # WAHT THIS!?
+        image.seek(0)
+        resp = s3.upload_fileobj(
             image,
             AWS_BUCKET,
-            id
+            f"{id}{image.content_type.replace('image/','.')}",
+            ExtraArgs={'ACL': 'public-read', 'ContentType': image.content_type}
         )
-        
     except Exception as err:
         print("Something Happened: ", err)
         return err
+
+    # TODO: need to return AWS url
     return "{}{}".format(S3_LOCATION, id)

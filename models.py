@@ -1,6 +1,7 @@
 """Models for pixly image app."""
 
 from flask_sqlalchemy import SQLAlchemy
+import enum
 
 db = SQLAlchemy()
 
@@ -11,40 +12,41 @@ def connect_db(app):
     db.app = app
     db.init_app(app)
 
-class Image (db.Model):
-    """Pets up for adoption"""
+
+# class MyEnum(enum.Enum):
+#     jpeg = ".jpeg"
+#     jpg = ".jpg"
+#     png = ".png"
+
+
+class DBImage (db.Model):
+    """Images for pixly db"""
 
     __tablename__ = "images"
 
     id = db.Column(
-        db.Integer,
-        primary_key=True,
-        autoincrement=True)
+        db.String,
+        primary_key=True)
 
-    name = db.Column(
+    caption = db.Column(
         db.String(50),
+        nullable=True,
+        default="")
+
+    # can try to figure out using enums later
+    file_extension = db.Column(
+        db.String(5),
         nullable=False)
 
-    species = db.Column(
-        db.String(50),
+    width = db.Column(
+        db.Integer(),
         nullable=False)
 
-    photo_url = db.Column(
-        db.String(5000), 
-        nullable = False, 
-        default = "") 
-
-    age = db.Column(
-        db.String(10),
+    length = db.Column(
+        db.Integer(),
         nullable=False)
 
-    notes = db.Column(
-            db.Text,
-            nullable=True)
-
-    available = db.Column(
-            db.Boolean,
-            nullable=False, 
-            default=True)
-
-                  
+    # available = db.Column(
+    #     db.Boolean,
+    #     nullable=False,
+    #     default=True)
