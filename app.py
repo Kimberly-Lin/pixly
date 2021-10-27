@@ -1,11 +1,15 @@
 import os
 
 from flask_debugtoolbar import DebugToolbarExtension
-from flask import Flask, flash, redirect, render_template, request
+from flask import Flask, flash, redirect, render_template, request, jsonify
+from uuid import uuid4
+from PIL import Image
+from PIL.ExifTags import TAGS
 import boto3
+
 # from models import db, connect_db, ModelName
-from forms import ImageForm
 from s3 import upload
+from flask_cors import CORS
 ######################## AWS CONFIGURATION #########################
 AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
@@ -19,7 +23,7 @@ app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///pixly'
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['SQLALCHEMY_ECHO'] = True
-
+CORS(app)
 # connect_db(app)
 
 # debug = DebugToolbarExtension(app)
@@ -39,18 +43,35 @@ def upload_photo():
        Save some portions of metadata to DB + caption
        Upload file to AWS
        Show success message"""
-
-    form = ImageForm()
-    if form.validate_on_submit():
-        caption = form.caption.data
-        image = form.image.data
-        print(image)
-        print(caption)
-        upload(image)
-        breakpoint()
+    breakpoint()
+    img = request.files['file']
+    print('img is', img)
+    image = Image.open(img)
+    print(image)
+    print(img)
+    # exifdata = image.getexif()
+    # print('image', image)
+    # print('exif', exifdata)
+    # form = ImageForm()
+    # if form.validate_on_submit():
+    #     caption = form.caption.data
+    #     image = form.image.data
+    #     id = uuid4()
+    #     breakpoint()
+    #     image = Image.open(image.read())
+    #     exifdata = image.getexif()
+    #     for tag_id in exifdata:
+    #         # get the tag name, instead of human unreadable tag id
+    #         tag = TAGS.get(tag_id, tag_id)
+    #         data = exifdata.get(tag_id)
+    #         # decode bytes 
+    #         if isinstance(data, bytes):
+    #             data = data.decode()
+    #         print(f"{tag:25}: {data}")
+    #     breakpoint()
+    #     resp = upload(image, id)
+    #     print(resp)
         # aws_resp = upload_to_aws(image)
         # img_data = parse_image_data(image)
         # db_rep = upload_to_db(img_data, caption)
-        return redirect('/upload')
-    else:
-        return render_template("form.html", form=form)
+    return jsonify("hi")
