@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Image Upload
+{% endblock %}
+
+{% block content %}
+<h1 class="">Upload an image!</h1>
+
+<form id="image-upload-form" enctype="multipart/form-data" method="POST" class="col-8">
+    {{ form.hidden_tag() }}
+    <!--add type=hidden form fields -->
+
+    {% for field in form
+        if field.widget.input_type != 'hidden' %}
+
+    <p>
+        {{ field.label (class="form-label")}}
+        {{ field (class="form-control") }}
+
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+    </p>
+
+    {% endfor %}
+    <div class="text-center">
+        <button class='btn btn-info form-actions px-5' type="submit">Upload Image</button>
+    </div>
+</form>
+
+
+{% endblock %}

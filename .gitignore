@@ -1,2 +1,2 @@
-/pixly-backend/.env
-/pixly-backend/venv
+/venv
+.env
