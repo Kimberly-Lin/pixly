@@ -41,8 +41,8 @@ IMAGE_DB_COLUMNS = ["id", "caption",
 
 
 @app.post("/upload")
-def upload_photo():
-    """Shows photo upload form."""
+def upload_image():
+    """Shows image upload form."""
 
     imgStorage = request.files['file']
     caption = request.form['caption']
@@ -78,8 +78,9 @@ def upload_photo():
 
 
 @app.get("/all")
-def get_all_photos():
-    """Fetch all photos in the database, returns urls in a list"""
+def get_all_images():
+    """Fetch all images in the database.
+    returns json of { images: [image,...] }"""
 
     result = Image.query.all()
 
@@ -94,3 +95,17 @@ def get_all_photos():
         images.append(imageDetails)
 
     return jsonify({"images": images})
+
+@app.get("/image/<id>")
+def get_image(id):
+    """Fetch single image from database by id, returns json of { image: {id, ...} }"""
+
+    image = Image.query.get_or_404(id)
+    imageDetails = {}
+    for field in IMAGE_DB_COLUMNS:
+        if (field == 'img_url'):
+            imageDetails['imgUrl'] = image.__getattribute__(field)
+        else: 
+            imageDetails[field] = image.__getattribute__(field)
+
+    return jsonify({"image": imageDetails})
