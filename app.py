@@ -2,7 +2,7 @@ import boto3
 import os
 
 # from flask_debugtoolbar import DebugToolbarExtension
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 # flash, redirect, render_template,
 from flask_cors import CORS
 from uuid import uuid4
@@ -10,7 +10,7 @@ from uuid import uuid4
 # from models import db, connect_db, ModelName
 from s3 import aws_upload
 from models import db, connect_db, Image
-from utils import getExif
+from utils import getExif, BW
 ######################## AWS CONFIGURATION #########################
 AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
@@ -90,11 +90,12 @@ def get_all_images():
         for field in IMAGE_DB_COLUMNS:
             if (field == 'img_url'):
                 imageDetails['imgUrl'] = image.__getattribute__(field)
-            else: 
+            else:
                 imageDetails[field] = image.__getattribute__(field)
         images.append(imageDetails)
 
     return jsonify({"images": images})
+
 
 @app.get("/image/<id>")
 def get_image(id):
@@ -105,7 +106,18 @@ def get_image(id):
     for field in IMAGE_DB_COLUMNS:
         if (field == 'img_url'):
             imageDetails['imgUrl'] = image.__getattribute__(field)
-        else: 
+        else:
             imageDetails[field] = image.__getattribute__(field)
 
     return jsonify({"image": imageDetails})
+
+
+@app.post("/image/<id>/start_edit")
+def edit(id):
+
+    image = Image.query.get_or_404(id)
+    edit_type = request.body["edit_type"]
+
+    file_location = file_open(image.img_url)
+
+    return send_file(f"./{result}")

@@ -1,6 +1,10 @@
 from PIL import Image
 from PIL.ExifTags import TAGS
 
+from uuid import uuid4
+
+import requests
+
 
 def getExif(imgFileStorage):
     """From image, return exif data as a dictionary"""
@@ -23,3 +27,29 @@ def getExif(imgFileStorage):
             exif_decoded[tag] = data
 
     return exif_decoded
+
+
+def file_open(img_url):
+    image = requests.get(img_url)
+
+    # open file from local
+    file = open("temp.jpg", "wb")
+    file.write(image.content)
+    file.close()
+
+
+def edit(img_url, edit_type):
+    """Take image at url and rotate 180 degrees"""
+    # need to make folder where these images will live and figure out how to save to there
+    # integrate pillow and save edited photo
+    file_open(img_url)
+
+    new_img = Image.open("temp.jpg")
+
+    if (rotate):
+        new_img = new_img.rotate(180)
+    if (bw):
+    new_img.save("./temp_rotated.jpg")
+    # Saved in the same relative location
+    # file.save("rotated_picture.jpg")
+    return "temp_rotated.jpg"
