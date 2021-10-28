@@ -37,12 +37,13 @@ def file_open(img_url):
     file.write(image.content)
     file.close()
 
+    return "temp.jpg"
 
-def edit(img_url, edit_type):
+
+def edit("temp.jpg", edit_type):
     """Take image at url and rotate 180 degrees"""
     # need to make folder where these images will live and figure out how to save to there
     # integrate pillow and save edited photo
-    file_open(img_url)
 
     new_img = Image.open("temp.jpg")
 
