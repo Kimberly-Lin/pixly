@@ -47,12 +47,12 @@ def upload_photo():
     imgStorage = request.files['file']
     caption = request.form['caption']
     extension = imgStorage.content_type.replace("image/", ".")
-    id = uuid4()
+    id = str(uuid4())
 
     exif_decoded = getExif(imgStorage)
 
     # upload to AWS
-    imgUrl = aws_upload(imgStorage, f"{id}{extension}")
+    img_url = aws_upload(imgStorage, f"{id}{extension}")
 
     # upload to database
     dbImage = Image(
@@ -61,7 +61,7 @@ def upload_photo():
         file_extension=extension,
         width=exif_decoded.get("width"),
         length=exif_decoded.get("length"),
-        img_url=imgUrl
+        img_url=img_url
     )
 
     db.session.add(dbImage)
@@ -69,7 +69,10 @@ def upload_photo():
 
     imageDetails = {}
     for field in IMAGE_DB_COLUMNS:
-        imageDetails[field] = dbImage[field]
+        if (field == 'img_url'):
+            imageDetails['imgUrl'] = dbImage.__getattribute__(field)
+        else:
+            imageDetails[field] = dbImage.__getattribute__(field)
 
     return jsonify(imageDetails)
 
@@ -84,7 +87,10 @@ def get_all_photos():
     for image in result:
         imageDetails = {}
         for field in IMAGE_DB_COLUMNS:
-            imageDetails[field] = image[field]
+            if (field == 'img_url'):
+                imageDetails['imgUrl'] = image.__getattribute__(field)
+            else: 
+                imageDetails[field] = image.__getattribute__(field)
         images.append(imageDetails)
 
     return jsonify({"images": images})

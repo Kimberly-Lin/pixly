@@ -24,7 +24,7 @@ class Image (db.Model):
 
     __tablename__ = "images"
 
-    def __getitem__(self, field):
+    def get(self, field):
         return self.__dict__[field]
 
     id = db.Column(
