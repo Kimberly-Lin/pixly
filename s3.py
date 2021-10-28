@@ -20,14 +20,14 @@ def aws_upload(image, filename):
     try:
         # WAHT THIS!?
         image.seek(0)
-        resp = s3.upload_fileobj(
+        s3.upload_fileobj(
             image,
             AWS_BUCKET,
             filename,
             ExtraArgs={
-                'ACL': 'public-read', 
+                'ACL': 'public-read',
                 'ContentType': image.content_type
-                }
+            }
         )
     except Exception as err:
         print("Something Happened: ", err)

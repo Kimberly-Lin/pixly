@@ -1,7 +1,7 @@
 """Models for pixly image app."""
 
 from flask_sqlalchemy import SQLAlchemy
-import enum
+# import enum
 
 db = SQLAlchemy()
 
@@ -19,10 +19,13 @@ def connect_db(app):
 #     png = ".png"
 
 
-class DBImage (db.Model):
+class Image (db.Model):
     """Images for pixly db"""
 
     __tablename__ = "images"
+
+    def __getitem__(self, field):
+        return self.__dict__[field]
 
     id = db.Column(
         db.String,
@@ -45,3 +48,7 @@ class DBImage (db.Model):
     length = db.Column(
         db.Integer(),
         nullable=True)
+
+    img_url = db.Column(
+        db.Text,
+        nullable=False)
