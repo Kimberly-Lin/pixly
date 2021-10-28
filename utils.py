@@ -15,6 +15,11 @@ def getExif(imgFileStorage):
         # decode bytes
         if isinstance(data, bytes):
             data = data.decode()
-        exif_decoded[tag] = data
+        if tag == 'TileWidth' or tag == 'ImageWidth':
+            exif_decoded['width'] = data
+        elif tag == 'TileLength' or tag == 'ImageLength':
+            exif_decoded['length'] = data
+        else:
+            exif_decoded[tag] = data
 
     return exif_decoded

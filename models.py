@@ -40,13 +40,8 @@ class DBImage (db.Model):
 
     width = db.Column(
         db.Integer(),
-        nullable=False)
+        nullable=True)
 
     length = db.Column(
         db.Integer(),
-        nullable=False)
-
-    # available = db.Column(
-    #     db.Boolean,
-    #     nullable=False,
-    #     default=True)
+        nullable=True)

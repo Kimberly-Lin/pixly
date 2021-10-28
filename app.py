@@ -7,7 +7,7 @@ from flask_cors import CORS
 from uuid import uuid4
 
 # from models import db, connect_db, ModelName
-from s3 import upload
+from s3 import aws_upload
 from models import db, connect_db, DBImage
 from utils import getExif
 ######################## AWS CONFIGURATION #########################
@@ -36,22 +36,30 @@ db.create_all()
 ############################## ROUTES ################################
 
 
-@app.route("/upload", methods=['GET', 'POST'])
+@app.post("/upload")
 def upload_photo():
     """Shows photo upload form."""
+
     imgStorage = request.files['file']
     caption = request.form['caption']
     extension = imgStorage.content_type.replace("image/", ".")
     id = uuid4()
-    exif_decoded = getExif(imgStorage)
-    resp = upload(imgStorage, f"{id}")
 
-    dbImage = DBImage(id=id, caption=caption, file_extension=extension,
-                      width=exif_decoded["TileWidth"], length=exif_decoded["TileLength"])
+    exif_decoded = getExif(imgStorage)
+
+    #upload to AWS
+    imgUrl = aws_upload(imgStorage, f"{id}{extension}")
+    
+    #upload to database
+    dbImage = DBImage(
+        id=id, 
+        caption=caption, 
+        file_extension=extension,
+        width=exif_decoded.get("width"), 
+        length=exif_decoded.get("length")
+        )
 
     db.session.add(dbImage)
     db.session.commit()
 
-    # TODO: db_rep = upload_to_db(img_data, caption)
-    # Return
-    return jsonify("hi")
+    return jsonify({'imgUrl': imgUrl})
