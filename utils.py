@@ -47,7 +47,6 @@ def edit(file_location, edit_type):
     """Take image at url and rotate 180 degrees"""
     # need to make folder where these images will live and figure out how to save to there
     # integrate pillow and save edited photo
-
     new_img = Image.open(file_location)
 
     # could add input for rotation angle
