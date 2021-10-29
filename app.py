@@ -2,7 +2,7 @@ import boto3
 import os
 
 # from flask_debugtoolbar import DebugToolbarExtension
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, send_from_directory
 # flash, redirect, render_template,
 from flask_cors import CORS
 from uuid import uuid4
@@ -130,7 +130,8 @@ def make_edit(id):
     edited_file = edit(file_location, edit_type)
 
     # return send_file(edited_file)
-    return jsonify({'status': 'Edit Success'})
+    # return jsonify({'success': 'Edit Success'})
+    return jsonify({'file_location': file_location})
 
 
 @app.post("/image/<id>/save_edits")
@@ -168,3 +169,8 @@ def save_edits(id):
     delete(file_location)
 
     return jsonify(image_details)
+
+
+@app.route('/editimages/<path:path>')
+def send_image(path):
+    return send_from_directory("./temp_image_edits", path)
