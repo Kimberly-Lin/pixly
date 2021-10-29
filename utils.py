@@ -4,7 +4,7 @@ from PIL.ExifTags import TAGS
 from uuid import uuid4
 
 import requests
-
+import os
 
 def getExif(imgFileStorage):
     """From image, return exif data as a dictionary"""
@@ -31,26 +31,35 @@ def getExif(imgFileStorage):
 
 def file_open(img_url):
     image = requests.get(img_url)
-
+    filename = str(uuid4())+'.jpeg'
+    file_location = f"./temp_image_edits/{filename}"
     # open file from local
-    file = open("temp.jpg", "wb")
+    file = open(file_location, "wb")
     file.write(image.content)
     file.close()
 
-    return "temp.jpg"
+    return file_location
 
 
-def edit("temp.jpg", edit_type):
+def edit(file_location, edit_type):
     """Take image at url and rotate 180 degrees"""
     # need to make folder where these images will live and figure out how to save to there
     # integrate pillow and save edited photo
 
-    new_img = Image.open("temp.jpg")
+    new_img = Image.open(file_location)
+    
+    if (edit_type == 'rotate'):
+        new_img = new_img.rotate(90)
+        new_img.save(file_location)
 
-    if (rotate):
-        new_img = new_img.rotate(180)
-    if (bw):
-    new_img.save("./temp_rotated.jpg")
-    # Saved in the same relative location
-    # file.save("rotated_picture.jpg")
-    return "temp_rotated.jpg"
+    if (edit_type == 'bw'):
+        bw_img = new_img.convert('L')
+        bw_img.save(file_location)
+
+    return file_location
+
+
+def delete(file_location):
+    os.remove(file_location)
+    return f"removed {file_location}"
+    

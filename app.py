@@ -8,9 +8,9 @@ from flask_cors import CORS
 from uuid import uuid4
 
 # from models import db, connect_db, ModelName
-from s3 import aws_upload
+from s3 import aws_upload, aws_upload_localfile
 from models import db, connect_db, Image
-from utils import getExif, BW
+from utils import getExif, edit, file_open, delete
 ######################## AWS CONFIGURATION #########################
 AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
@@ -113,11 +113,56 @@ def get_image(id):
 
 
 @app.post("/image/<id>/start_edit")
-def edit(id):
+def start_edit(id):
 
     image = Image.query.get_or_404(id)
-    edit_type = request.body["edit_type"]
-
     file_location = file_open(image.img_url)
 
-    return send_file(f"./{result}")
+    return jsonify({"file_location": file_location})
+
+
+@app.post("/image/<id>/edit")
+def make_edit(id):
+    req = request.get_json()
+    file_location = req['file_location']
+    edit_type = req['edit_type']
+
+    edited_file = edit(file_location, edit_type)
+
+    return send_file(edited_file)
+
+@app.post("/image/<id>/save_edits")
+def save_edits(id):
+    req = request.get_json()
+    file_location = req['file_location']
+    caption = req['caption']
+    uuid = str(uuid4())
+    aws_filename = uuid + '.jpeg'
+
+    exif_decoded = getExif(file_location)
+    # upload to AWS
+    img_url = aws_upload_localfile(file_location, aws_filename)
+
+    # upload to database
+    dbImage = Image(
+        id=uuid,
+        caption=caption,
+        file_extension='.jpeg', #TODO: add conversion options
+        width=exif_decoded.get("width"),
+        length=exif_decoded.get("length"),
+        img_url=img_url
+    )
+
+    db.session.add(dbImage)
+    db.session.commit()
+
+    imageDetails = {}
+    for field in IMAGE_DB_COLUMNS:
+        if (field == 'img_url'):
+            imageDetails['imgUrl'] = dbImage.__getattribute__(field)
+        else:
+            imageDetails[field] = dbImage.__getattribute__(field)
+
+    delete(file_location)
+
+    return jsonify(imageDetails)
