@@ -129,7 +129,8 @@ def make_edit(id):
 
     edited_file = edit(file_location, edit_type)
 
-    return send_file(edited_file)
+    # return send_file(edited_file)
+    return jsonify({'status': 'Edit Success'})
 
 
 @app.post("/image/<id>/save_edits")
@@ -157,13 +158,13 @@ def save_edits(id):
     db.session.add(dbImage)
     db.session.commit()
 
-    imageDetails = {}
+    image_details = {}
     for field in IMAGE_DB_COLUMNS:
         if (field == 'img_url'):
-            imageDetails['imgUrl'] = dbImage.__getattribute__(field)
+            image_details['imgUrl'] = dbImage.__getattribute__(field)
         else:
-            imageDetails[field] = dbImage.__getattribute__(field)
+            image_details[field] = dbImage.__getattribute__(field)
 
     delete(file_location)
 
-    return jsonify(imageDetails)
+    return jsonify(image_details)
