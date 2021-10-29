@@ -131,6 +131,7 @@ def make_edit(id):
 
     return send_file(edited_file)
 
+
 @app.post("/image/<id>/save_edits")
 def save_edits(id):
     req = request.get_json()
@@ -147,7 +148,7 @@ def save_edits(id):
     dbImage = Image(
         id=uuid,
         caption=caption,
-        file_extension='.jpeg', #TODO: add conversion options
+        file_extension='.jpeg',  # TODO: add conversion options
         width=exif_decoded.get("width"),
         length=exif_decoded.get("length"),
         img_url=img_url

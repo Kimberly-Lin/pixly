@@ -37,7 +37,6 @@ def aws_upload(image, filename):
     return "{}{}".format(S3_LOCATION, filename)
 
 
-
 def aws_upload_localfile(filename, object_name=None):
     """Upload a file to an S3 bucket
 
@@ -50,14 +49,13 @@ def aws_upload_localfile(filename, object_name=None):
     # If S3 object_name was not specified, use filename
     if object_name is None:
         object_name = os.path.basename(filename)
-    breakpoint()
     # Upload the file
     s3_client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
-                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+                             aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
     try:
-        response = s3_client.upload_file(
+        s3_client.upload_file(
             filename,
-            AWS_BUCKET, 
+            AWS_BUCKET,
             object_name,
             ExtraArgs={
                 'ACL': 'public-read',
