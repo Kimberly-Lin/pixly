@@ -2,7 +2,7 @@ import boto3
 import os
 
 # from flask_debugtoolbar import DebugToolbarExtension
-from flask import Flask, request, jsonify, send_file, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 # flash, redirect, render_template,
 from flask_cors import CORS
 from uuid import uuid4
