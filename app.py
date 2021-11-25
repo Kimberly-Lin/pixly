@@ -92,7 +92,7 @@ def get_all_images():
                 imageDetails['imgUrl'] = image.__getattribute__(field)
             else:
                 imageDetails[field] = image.__getattribute__(field)
-        images.append(imageDetails)
+        images.insert(0,imageDetails)
 
     return jsonify({"images": images})
 
