@@ -60,8 +60,8 @@ def edit(file_location, edit_type):
 
     # make 50% smaller
     if (edit_type == 'resize'):
-        width, height = new_img.size
-        new_img = new_img.resize(int(round(width/2)), int((round(height/2))))
+        (width, height) = new_img.size
+        new_img = new_img.resize((int(round(width/2)), int((round(height/2)))))
         new_img.save(file_location)
 
     # flip left/right
@@ -76,7 +76,7 @@ def edit(file_location, edit_type):
 
     # color split and merge
     if (edit_type == 'color_split'):
-        red, green, blue = new_img.split()
+        (red, green, blue) = new_img.split()
         new_img = Image.merge("RGB", (green, red, blue))
         new_img.save(file_location)
 

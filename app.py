@@ -31,7 +31,7 @@ connect_db(app)
 # debug = DebugToolbarExtension(app)
 app.config['SECRET_KEY'] = 'secret'
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-db.drop_all()
+# db.drop_all()
 db.create_all()
 
 ############################## ROUTES ################################
@@ -126,7 +126,7 @@ def make_edit(id):
     req = request.get_json()
     file_location = req['file_location']
     edit_type = req['edit_type']
-
+    print("edit_type", edit_type)
     edited_file = edit(file_location, edit_type)
 
     # return send_file(edited_file)
