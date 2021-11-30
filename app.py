@@ -31,12 +31,12 @@ connect_db(app)
 # debug = DebugToolbarExtension(app)
 app.config['SECRET_KEY'] = 'secret'
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-# db.drop_all()
+db.drop_all()
 db.create_all()
 
 ############################## ROUTES ################################
 
-IMAGE_DB_COLUMNS = ["id", "caption",
+IMAGE_DB_COLUMNS = ["id", "title",
                     "file_extension", "width", "length", "img_url"]
 
 
@@ -45,7 +45,7 @@ def upload_image():
     """Shows image upload form."""
 
     imgStorage = request.files['file']
-    caption = request.form['caption']
+    title = request.form['title']
     extension = imgStorage.content_type.replace("image/", ".")
     id = str(uuid4())
 
@@ -57,7 +57,7 @@ def upload_image():
     # upload to database
     dbImage = Image(
         id=id,
-        caption=caption,
+        title=title,
         file_extension=extension,
         width=exif_decoded.get("width"),
         length=exif_decoded.get("length"),
@@ -138,7 +138,7 @@ def make_edit(id):
 def save_edits(id):
     req = request.get_json()
     file_location = req['file_location']
-    caption = req['caption']
+    title = req['title']
     uuid = str(uuid4())
     aws_filename = uuid + '.jpeg'
 
@@ -149,7 +149,7 @@ def save_edits(id):
     # upload to database
     dbImage = Image(
         id=uuid,
-        caption=caption,
+        title=title,
         file_extension='.jpeg',  # TODO: add conversion options
         width=exif_decoded.get("width"),
         length=exif_decoded.get("length"),

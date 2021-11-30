@@ -31,7 +31,7 @@ class Image (db.Model):
         db.String,
         primary_key=True)
 
-    caption = db.Column(
+    title = db.Column(
         db.String(50),
         nullable=True,
         default="")

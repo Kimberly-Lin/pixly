@@ -7,4 +7,4 @@ class ImageForm(FlaskForm):
     """Form for uploading images. Validates for file types of """
 
     image = FileField('Image', validators=[FileRequired(), FileAllowed(['png','jpg', 'jpeg'], '.png, .jpg or .jpeg only!')])
-    caption = StringField('Caption', validators=[length(max=100)])
+    title = StringField('Title', validators=[length(max=100)])
