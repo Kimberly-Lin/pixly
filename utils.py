@@ -33,7 +33,6 @@ def getExif(imgFileStorage):
 def file_open(img_url):
     image = requests.get(img_url)
     filename = str(uuid4())+'.jpeg'
-    # QUESTION: for kim, need to create temp_image_edits folder manually before this worked??
     file_location = "./temp_image_edits/" + filename
     # open file from local
     file = open(file_location, "wb")
@@ -45,11 +44,9 @@ def file_open(img_url):
 
 def edit(file_location, edit_type):
     """Take image at url and rotate 180 degrees"""
-    # need to make folder where these images will live and figure out how to save to there
     # integrate pillow and save edited photo
     new_img = Image.open(file_location)
 
-    # could add input for rotation angle
     if (edit_type == 'rotate'):
         new_img = new_img.rotate(90)
         new_img.save(file_location)

@@ -3,11 +3,9 @@ import os
 
 # from flask_debugtoolbar import DebugToolbarExtension
 from flask import Flask, request, jsonify, send_from_directory
-# flash, redirect, render_template,
 from flask_cors import CORS
 from uuid import uuid4
 
-# from models import db, connect_db, ModelName
 from s3 import aws_upload, aws_upload_localfile
 from models import db, connect_db, Image
 from utils import getExif, edit, file_open, delete
@@ -129,8 +127,6 @@ def make_edit(id):
     print("edit_type", edit_type)
     edited_file = edit(file_location, edit_type)
 
-    # return send_file(edited_file)
-    # return jsonify({'success': 'Edit Success'})
     return jsonify({'file_location': file_location})
 
 

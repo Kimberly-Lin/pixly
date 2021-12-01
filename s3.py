@@ -10,16 +10,11 @@ AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
 AWS_BUCKET = os.environ["AWS_BUCKET"]
 S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(AWS_BUCKET)
 
-# data = open('./test1.jpg', 'rb')
-# resp = pixly_bucket.put_object(Key='test1.jpg', Body=data)
-
 
 def aws_upload(image, filename):
     s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
                       aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-    # pixly_bucket = s3.Bucket(os.environ['AWS_BUCKET'])
     try:
-        # WAHT THIS!?
         image.seek(0)
         s3.upload_fileobj(
             image,
