@@ -35,7 +35,7 @@ def file_open(img_url):
     filename = str(uuid4())+'.jpeg'
     file_location = "./tmp/" + filename
     # open file from local
-    file = open(file_location, "wb")
+    file = open(file_location, "wb+")
     file.write(image.content)
     file.close()
 
