@@ -30,7 +30,7 @@ app.config['SQLALCHEMY_ECHO'] = True
 connect_db(app)
 
 # debug = DebugToolbarExtension(app)
-app.config['SECRET_KEY'] = 'secret'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # db.drop_all()
 db.create_all()
