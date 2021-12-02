@@ -33,7 +33,7 @@ def getExif(imgFileStorage):
 def file_open(img_url):
     image = requests.get(img_url)
     filename = str(uuid4())+'.jpeg'
-    file_location = "./temp_image_edits/" + filename
+    file_location = "./tmp/" + filename
     # open file from local
     file = open(file_location, "wb")
     file.write(image.content)

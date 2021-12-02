@@ -169,4 +169,12 @@ def save_edits(id):
 
 @app.route('/editimages/<path:path>')
 def send_image(path):
-    return send_from_directory("./temp_image_edits", path)
+    return send_from_directory("./tmp", path)
+
+@app.after_request
+def add_header(response):
+    """Add non-caching headers on every request."""
+
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+    response.cache_control.no_store = True
+    return response
