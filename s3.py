@@ -8,7 +8,7 @@ load_dotenv()
 AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
 AWS_BUCKET = os.environ["AWS_BUCKET"]
-S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(AWS_BUCKET)
+S3_LOCATION = 'https://{}.s3.amazonaws.com/'.format(AWS_BUCKET)
 
 
 def aws_upload(image, filename):
