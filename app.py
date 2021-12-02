@@ -17,11 +17,14 @@ AWS_BUCKET = os.environ["AWS_BUCKET"]
 s3 = boto3.resource('s3')
 pixly_bucket = s3.Bucket(os.environ['AWS_BUCKET'])
 
+database_url = os.environ.get('DATABASE_URL')
+database_url = database_url.replace('postgres://', 'postgresql://')
+
 ######################## FLASK CONFIGURATION #########################
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///pixly'
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 connect_db(app)
