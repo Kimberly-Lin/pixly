@@ -3,7 +3,7 @@ Back-end for Pixly built in Python Flask, PostgreSQL, AWS S3, Pillow.
 
 ## Completed features
 - AWS S3 integration to Flask
-- Create db tables for images and AWS links
+- Create db tables and models for images and AWS links
 - Create utility functions for photo editing, image data parsing
 - Create API routes for pixly front-end to call
 
@@ -36,8 +36,6 @@ Back-end for Pixly built in Python Flask, PostgreSQL, AWS S3, Pillow.
     ```
     
 ## More to-do:
-- Build tagging system to images
-- Create search function by tags or titles
-- Implement tests
-- Implement TypeScript to all front-end code
+- Create a column in database table for tags
+- Build route to enable searching by tags and titles
 
