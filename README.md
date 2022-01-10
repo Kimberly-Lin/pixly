@@ -1,7 +1,5 @@
 # Pixly-Backend
-Back-end for Pixly built in Python Flask, PostgreSQL, AWS S3, Pillow.
-
-Deployed at https://pixly-klin.surge.sh
+Back-end for [Pixly](https://pixly-klin.surge.sh) built in Python Flask, PostgreSQL, AWS S3, Pillow.
 
 ## Completed features
 - AWS S3 integration to Flask
